@@ -2,10 +2,12 @@
 
 ## Example
 
-Assessing the conditional independence between $C \perp\!\!\!\perp E \mid B, D$
-given the following Bayesian Network:
+Assessing the conditional independence between
+$`C \perp \!\!\! \perp E \mid B, D`$ given the following Bayesian Network:
 
-![BN](assets/markov.png)
+<p align="center">
+  <img src="assets/markov.png" />
+</p>
 
 ```python
 from src.network import BayesianNetwork
