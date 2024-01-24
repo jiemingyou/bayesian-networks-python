@@ -1,8 +1,5 @@
 # bayesian-networks-python
 
-Elementary Bayesian Network abstraction for the ML: Advanced Probability Methods
-course
-
 ## Example
 
 Assessing the conditional independence between $C \perp\!\!\!\perp E \mid B, D$
