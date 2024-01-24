@@ -1,5 +1,13 @@
 # bayesian-networks-python
 
+To run
+
+```bash
+git clone https://github.com/jiemingyou/bayesian-networks-python.git
+cd bayesian-networks-python
+python3 src/network.py
+```
+
 ## Example
 
 Assessing the conditional independence between
