@@ -1,3 +1,6 @@
+from typing import Set, List
+
+
 class BayesianNetwork:
     def __init__(self):
         self.nodes = set()
@@ -23,7 +26,7 @@ class BayesianNetwork:
         """
         self.edges.add((node1, node2))
 
-    def get_parents(self, node: str) -> set[str]:
+    def get_parents(self, node: str) -> Set[str]:
         """Get the parents of a node."""
         parents = set()
         for edge in self.edges:
@@ -31,7 +34,7 @@ class BayesianNetwork:
                 parents.add(edge[0])
         return parents
 
-    def get_descendants(self, node: str) -> set[str]:
+    def get_descendants(self, node: str) -> Set[str]:
         """Get the descendants of a node."""
         descendants = set()
         for edge in self.edges:
@@ -40,7 +43,7 @@ class BayesianNetwork:
                 descendants.update(self.get_descendants(edge[1]))
         return descendants
 
-    def get_neighbors(self, node: str) -> set[str]:
+    def get_neighbors(self, node: str) -> Set[str]:
         """Get the neighbors of a node."""
         neighbors = set()
         for edge in self.edges:
@@ -54,8 +57,8 @@ class BayesianNetwork:
         self,
         node1: str,
         node2: str,
-        visited: set[str] = None,
-    ) -> list[list[str]]:
+        visited: Set[str] = None,
+    ) -> List[List[str]]:
         """
         Get all paths from node1 to node2.
         Treat the network as an undirected graph.
@@ -79,12 +82,18 @@ class BayesianNetwork:
         """Check if a node is a collider."""
         return len(self.get_parents(node1)) >= 2
 
-    def no_common_nodes(self, set1: set[str], set2: set[str]) -> bool:
+    def no_common_nodes(self, set1: Set[str], set2: Set[str]) -> bool:
         """Check if two sets have any common nodes."""
         return len(set1.intersection(set2)) == 0
 
-    def is_blocked(self, path: list, C: set[str]) -> bool:
+    def is_blocked(self, path: list, C: Set[str]) -> bool:
         """Check if a path between node1 and node2 is blocked."""
+
+        # Exclude the first and last nodes in the path
+        if len(path) <= 2:
+            return False
+        path = path[1:-1]
+
         for w in path:
             if self.is_collider(w):
                 descendants = self.get_descendants(w)
@@ -101,7 +110,7 @@ class BayesianNetwork:
         self,
         node1: str,
         node2: str,
-        C: set[str],
+        C: Set[str],
     ):
         """Check if node1 and node2 are d-separated given cond."""
         for path in self.get_paths(node1, node2):
