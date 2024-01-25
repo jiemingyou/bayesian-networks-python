@@ -31,13 +31,14 @@ class BayesianNetwork:
                 parents.add(edge[0])
         return parents
 
-    def get_children(self, node: str) -> set[str]:
-        """Get the children of a node."""
-        children = set()
+    def get_descendants(self, node: str) -> set[str]:
+        """Get the descendants of a node."""
+        descendants = set()
         for edge in self.edges:
             if edge[0] == node:
-                children.add(edge[1])
-        return children
+                descendants.add(edge[1])
+                descendants.update(self.get_descendants(edge[1]))
+        return descendants
 
     def get_neighbors(self, node: str) -> set[str]:
         """Get the neighbors of a node."""
@@ -78,31 +79,35 @@ class BayesianNetwork:
         """Check if a node is a collider."""
         return len(self.get_parents(node1)) >= 2
 
-    def set_intersection(self, set1: set[str], set2: set[str]) -> bool:
-        """Check if two sets have intersection."""
-        return len(set1.intersection(set2)) > 0
+    def no_common_nodes(self, set1: set[str], set2: set[str]) -> bool:
+        """Check if two sets have any common nodes."""
+        return len(set1.intersection(set2)) == 0
 
-    def is_blocked(self, path: list, Z: set[str]) -> bool:
+    def is_blocked(self, path: list, C: set[str]) -> bool:
         """Check if a path between node1 and node2 is blocked."""
         for w in path:
             if self.is_collider(w):
-                if w not in Z and not self.set_intersection(self.get_parents(w), Z):
+                descendants = self.get_descendants(w)
+                # Neither the collider nor any of its descendants are in the conditioning set
+                if (w not in C) and (self.no_common_nodes(descendants, C)):
                     return True
-            else:
-                if w in Z:
-                    return True
+            elif w in C:
+                # The non-collider is in the conditioning set
+                return True
+
         return False
 
     def is_d_separated(
         self,
         node1: str,
         node2: str,
-        cond: set[str],
-    ) -> bool:
+        C: set[str],
+    ):
         """Check if node1 and node2 are d-separated given cond."""
         for path in self.get_paths(node1, node2):
-            if not self.is_blocked(path, cond):
+            if not self.is_blocked(path, C):
                 return False, path
+
         return True
 
 
