@@ -1,16 +1,37 @@
 # bayesian-networks-python
 
-To run
+A simple Python implementation of Bayesian Networks (BN). Not the most efficient
+implementation, but it's simple and it works.
+
+## Features
+
+- [x] Add nodes
+- [x] Add edges
+- [x] Check colliders
+- [x] Check unblocked paths
+- [x] Check d-separation
+- [x] Check conditional independence
+- [ ] Check Markov blanket
+- [ ] Check Markov equivalence
+
+## Usage
+
+Clone the repository and navigate to the project directory.
 
 ```bash
 git clone https://github.com/jiemingyou/bayesian-networks-python.git
 cd bayesian-networks-python
+```
+
+Run the main script:
+
+```bash
 python3 src/network.py
 ```
 
 ## Example
 
-Assessing the conditional independence between
+Here's an example of how to assess the conditional independence between
 $`C \perp \!\!\! \perp E \mid B, D`$ given the following Bayesian Network:
 
 <p align="center">
