@@ -93,14 +93,18 @@ class BayesianNetwork:
         """Check if two sets have any common nodes."""
         return len(set1.intersection(set2)) == 0
 
+    def is_collider_blocking(self, node: str, C: Set[str]) -> bool:
+        """Check if a collider is blocking the path."""
+        descendants = self.get_descendants(node).union({node})
+        return self.no_common_nodes(descendants, C)
+
     def is_blocked(self, path: list, C: Set[str]) -> bool:
         """Check if a path between node1 and node2 is blocked."""
 
-        for w in path:
+        for w in path[1:-1]:
             if self.is_collider_in_path(w, path):
-                descendants = self.get_descendants(w)
-                # Neither the collider nor any of its descendants are in the conditioning set
-                if (w not in C) and (self.no_common_nodes(descendants, C)):
+                # The collider is not in the conditioning set
+                if self.is_collider_blocking(w, C):
                     return True
             elif w in C:
                 # The non-collider is in the conditioning set
