@@ -1,4 +1,4 @@
-# bayesian-networks-python
+# Python D-separation checker
 
 A simple Python implementation of Bayesian Networks (BN). Not the most efficient
 implementation, but it's simple and it works.
